@@ -10,17 +10,20 @@ const git = simpleGit();
 export type CheckResult = {
   quality: { typescript: string; lint: string };
   security: { npmAudit: string };
-  license: { status: string; details: object | null };
+  license: { status: string; details: { summary: string } | null };
+  score: number;
 };
 
 export async function checkRepo(repoUrl: string): Promise<CheckResult> {
-  if (existsSync(TEMP_DIR)) rmSync(TEMP_DIR, { recursive: true, force: true });
-  await git.clone(repoUrl, TEMP_DIR);
+  if (existsSync(TEMP_DIR)) {
+    rmSync(TEMP_DIR, { recursive: true, force: true });
+  }
 
+  await git.clone(repoUrl, TEMP_DIR);
   process.chdir(TEMP_DIR);
   run('npm install');
 
-  const result: CheckResult = {
+  const resultWithoutScore = {
     quality: {
       typescript: runCheck('npx tsc --noEmit'),
       lint: runCheck('npx eslint . --ext .ts,.tsx'),
@@ -30,27 +33,32 @@ export async function checkRepo(repoUrl: string): Promise<CheckResult> {
     },
     license: {
       status: 'FAIL',
-      details: null,
+      details: null as { summary: string } | null,
     },
   };
 
   try {
-    const output = execSync('npx license-checker --production --json', { encoding: 'utf-8' });
-    result.license.status = 'PASS';
-    result.license.details = JSON.parse(output);
+    const output = execSync('npx license-checker-rseidelsohn --production --summary', { encoding: 'utf-8' });
+    resultWithoutScore.license.status = 'PASS';
+    resultWithoutScore.license.details = {
+      summary: output.split('\n').slice(0, 10).join('\n'),
+    };
   } catch {
-    result.license.status = 'FAIL';
+    resultWithoutScore.license.status = 'FAIL';
   }
 
   rmSync(TEMP_DIR, { recursive: true, force: true });
-  return result;
+
+  const score = getScore(resultWithoutScore);
+
+  return { ...resultWithoutScore, score };
 }
 
 function run(cmd: string): void {
   try {
     execSync(cmd, { stdio: 'ignore' });
   } catch {
-    // ignore
+    // ignore errors here (for silent install failures)
   }
 }
 
@@ -61,4 +69,15 @@ function runCheck(cmd: string): string {
   } catch {
     return 'FAIL';
   }
+}
+
+function getScore(result: Omit<CheckResult, 'score'>): number {
+  let score = 0;
+
+  if (result.quality.typescript === 'PASS') score += 1;
+  if (result.quality.lint === 'PASS') score += 1;
+  if (result.security.npmAudit === 'PASS') score += 1.5;
+  if (result.license.status === 'PASS') score += 1.5;
+
+  return Math.round(score * 10) / 10; // e.g. 3.5
 }

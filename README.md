@@ -63,3 +63,8 @@ Checks a repository URL.
 - Node.js
 - body-parser
 - simple-git 
+
+Example to run:
+curl -X POST http://localhost:3000/check \
+  -H "Content-Type: application/json" \
+  -d '{"repoUrl":"https://github.com/21st-dev/magic-mcp"}'
