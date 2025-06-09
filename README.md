@@ -2,6 +2,8 @@
 
 A Node.js API service that checks repository information using Express and TypeScript.
 
+![MCP Checker Demo](check.png)
+
 ## Prerequisites
 
 - Node.js (v14 or higher)
