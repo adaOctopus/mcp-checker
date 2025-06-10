@@ -2,10 +2,11 @@
   "name": "mcp-checker",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "start": "node --loader ts-node/esm src/index.ts",
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,8 @@
   "description": "",
   "dependencies": {
     "@langchain/openai": "^0.5.12",
+    "@openbnb/mcp-server-airbnb": "^0.1.1",
+    "@playwright/mcp": "^0.0.28",
     "body-parser": "^2.2.0",
     "chalk": "^5.4.1",
     "cors": "^2.8.5",

@@ -1,28 +1,32 @@
 import { ChatOpenAI } from '@langchain/openai'
 import { MCPAgent, MCPClient } from 'mcp-use'
+import { Request, Response } from 'express'
 import 'dotenv/config'
 
-export async function main() {
+export async function main(req: Request, res: Response) {
   // 1. Configure MCP servers
   try {
     const config = {
-        mcpServers: {
-          playwright: { command: 'npx', args: ['@playwright/mcp@latest'] }
-        }
+      mcpServers: {
+        airbnb: { command: 'npx', args: ['@openbnb/mcp-server-airbnb'] },
+        playwright: { command: 'npx', args: ['@playwright/mcp@0.0.28'] }
       }
-      const client = MCPClient.fromDict(config)
-    
-      // 2. Create LLM
-      const llm = new ChatOpenAI({ modelName: 'gpt-4o' })
-    
-      // 3. Instantiate agent
-      const agent = new MCPAgent({ llm, client, maxSteps: 20 })
-    
-      // 4. Run query
-      const result = await agent.run('Find the best restaurant in Tokyo using Google Search')
-      console.log('Result:', result)
-  } catch (error) {
+    }
+    const client = MCPClient.fromDict(config)
+  
+    // 2. Create LLM
+    const llm = new ChatOpenAI({ modelName: 'gpt-4' })
+  
+    // 3. Instantiate agent
+    const agent = new MCPAgent({ llm, client, maxSteps: 20 })
+  
+    // 4. Run query
+    const result = await agent.run('Find me an airbnb in Peniche, Portugal, then give me the options.')
+    console.log('Result:', result)
+    res.status(200).json(result)
+  } catch (error: any) {
     console.error('Error:', error)
+    res.status(500).json({ error: error.message })
   }
 }
 

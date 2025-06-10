@@ -2,12 +2,30 @@ import express, { Request, Response, Router, RequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import { checkRepo, CheckResult } from './checker';
+import playright from '../routes/playright.route';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import "dotenv/config";
+import cors from 'cors';
 
 const app = express();
 const router = Router();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
+// BodyMiddleware boilerplate
+app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(bodyParser.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+console.log(__filename,'here')
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 interface CheckRequest {
   repoUrl: string;
@@ -32,7 +50,9 @@ const checkHandler: RequestHandler<{}, any, CheckRequest> = async (req, res) => 
 };
 
 router.post('/check', checkHandler);
+app.use('/', playright);
 app.use(router);
+
 
 app.listen(PORT, () => {
   console.log(chalk.green(`🚀 MCP Checker server running at http://localhost:${PORT}`));
