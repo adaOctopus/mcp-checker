@@ -1,7 +1,6 @@
 # MCP Checker
 
-A Node.js API service that checks repository information using Express and TypeScript.
-
+A Node.js API service that checks repository information using Express/Typescript and mcp-use-ts.
 ![MCP Checker Demo](check.png)
 
 ## Prerequisites
