@@ -24,7 +24,8 @@
     "langchain": "^0.3.27",
     "license-checker-rseidelsohn": "^4.4.2",
     "mcp-use": "^0.0.6",
-    "simple-git": "^3.28.0"
+    "simple-git": "^3.28.0",
+    "tavily-mcp": "^0.2.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

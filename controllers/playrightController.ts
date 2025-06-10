@@ -8,6 +8,8 @@ export async function main(req: Request, res: Response) {
   try {
     const config = {
       mcpServers: {
+        tavily: { command: 'npx', args: ["-y",
+            "tavily-mcp"]},
         airbnb: { command: 'npx', args: ['@openbnb/mcp-server-airbnb'] },
         playwright: { command: 'npx', args: ['@playwright/mcp@0.0.28'] }
       }
@@ -21,7 +23,7 @@ export async function main(req: Request, res: Response) {
     const agent = new MCPAgent({ llm, client, maxSteps: 20 })
   
     // 4. Run query
-    const result = await agent.run('Find me an airbnb in Peniche, Portugal, then give me the options.')
+    const result = await agent.run('Use Tavily to find me the best platform to find Model Context Protocol servers..')
     console.log('Result:', result)
     res.status(200).json(result)
   } catch (error: any) {
