@@ -9,7 +9,7 @@ export async function main(req: Request, res: Response) {
     const config = {
       mcpServers: {
         tavily: { command: 'npx', args: ["-y",
-            "tavily-mcp"]},
+            "tavily-mcp"], env: {TAVILY_API_KEY: process.env.TAVILY_API_KEY}},
         airbnb: { command: 'npx', args: ['@openbnb/mcp-server-airbnb'] },
         playwright: { command: 'npx', args: ['@playwright/mcp@0.0.28'] }
       }

@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
-import { main } from "../controllers/playrightController";
+import { getMCPData } from "../controllers/fetchingController";
 const router = express.Router();
 
-router.post('/playright', main)
+router.get('/fetching', getMCPData)
 
 export default router;

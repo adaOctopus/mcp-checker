@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import chalk from 'chalk';
 import { checkRepo, CheckResult } from './checker';
 import playright from '../routes/playright.route';
+import fetching from '../routes/fetching.route';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import "dotenv/config";
@@ -51,6 +52,7 @@ const checkHandler: RequestHandler<{}, any, CheckRequest> = async (req, res) => 
 
 router.post('/check', checkHandler);
 app.use('/', playright);
+app.use('/', fetching);
 app.use(router);
 
 
