@@ -9,7 +9,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-export async function getMCPData(req: Request, res: Response) {
+export async function talkWithLLM(req: Request, res: Response) {
     const { prompt } = req.body;
   
     if (!prompt) {

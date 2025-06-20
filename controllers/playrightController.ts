@@ -23,7 +23,7 @@ export async function main(req: Request, res: Response) {
     const agent = new MCPAgent({ llm, client, maxSteps: 20 })
   
     // 4. Run query
-    const result = await agent.run('Use Tavily to find me the best platform to find Model Context Protocol servers..')
+    const result = await agent.run('Give me airbnb options in Peniche, Portugal, then give me the cheapest one..')
     console.log('Result:', result)
     res.status(200).json(result)
   } catch (error: any) {
