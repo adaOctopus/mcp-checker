@@ -63,7 +63,8 @@ Checks a repository URL.
 - TypeScript
 - Node.js
 - body-parser
-- simple-git 
+- simple-git
+- MVC Pattern
 
 Example to run:
 curl -X POST http://localhost:3000/check \
