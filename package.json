@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "firecrawl-mcp": "^1.11.0",
     "langchain": "^0.3.27",
     "license-checker-rseidelsohn": "^4.4.2",
     "mcp-use": "^0.0.6",
