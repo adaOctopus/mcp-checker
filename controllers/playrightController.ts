@@ -4,22 +4,22 @@ import { Request, Response } from 'express'
 import 'dotenv/config'
 
 const theQuery = `I want you to go to this website: https://mcp.so/server/MiniMax-MCP/MiniMax-AI?tab=tools , 
-// scrape it and return me back the server configuration JSON, so I can properly set it up in cursor.`
+// scrape it and return me back the server configuration JSON, so I can properly set it up in cursor. I want you to actually run the firecrawl_scrape tool. Execute it and return me the result.`
 
 export async function main(req: Request, res: Response) {
   // 1. Configure MCP servers
   try {
     const config = {
       mcpServers: {
-        // tavily: { command: 'npx', args: ["-y",
-        //     "tavily-mcp"], env: {TAVILY_API_KEY: process.env.TAVILY_API_KEY}},
-        // airbnb: { command: 'npx', args: ['@openbnb/mcp-server-airbnb'] },
-        // playwright: { command: 'npx', args: ['@playwright/mcp@0.0.28'] },
-        firecrawl: { command: 'npx', args: ['-y', 'firecrawl-mcp'], 
-          env : {
-            "FIRECRAWL_API_KEY": "fc-43227f0a42f44c73be828036c27a26f3",
-            "PATH": `${process.env.PATH}`
-          }}
+        tavily: { command: 'npx', args: ["-y",
+            "tavily-mcp"], env: {TAVILY_API_KEY: process.env.TAVILY_API_KEY}},
+        airbnb: { command: 'npx', args: ['@openbnb/mcp-server-airbnb'] },
+        playwright: { command: 'npx', args: ['@playwright/mcp@0.0.28'] },
+        // firecrawl: { command: 'npx', args: ['-y', 'firecrawl-mcp'], 
+        //   env : {
+        //     "FIRECRAWL_API_KEY": "fc-43227f0a42f44c73be828036c27a26f3",
+        //     "PATH": `${process.env.PATH}`
+        //   }}
       }
     }
     const client = MCPClient.fromDict(config)
